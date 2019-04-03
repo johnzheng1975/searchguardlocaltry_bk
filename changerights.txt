@@ -1,0 +1,92 @@
+----sg_action_groups.yml
+No change
+
+---sg_config.yml
+No changes
+
+---sg_roles
+Add below lines:
+### newf1*
+sg_newf1:
+  readonly: true
+  cluster:
+    - CLUSTER_COMPOSITE_OPS_RO
+  indices:
+    'newf1*':
+      '*':
+        - READ
+
+### newf2*
+sg_newf2:
+  readonly: true
+  cluster:
+    - CLUSTER_COMPOSITE_OPS_RO
+  indices:
+    'newf2*':
+      '*':
+        - READ
+
+# For logstash and beats
+sg_fluentd:
+  cluster:
+    - CLUSTER_MONITOR
+    - CLUSTER_COMPOSITE_OPS
+    - indices:admin/template/get
+    - indices:admin/template/put
+  indices:
+    'new*':
+      '*':
+        - CRUD
+        - CREATE_INDEX
+
+
+----sg_roles_mapping.yml
+Add below lines:
+sg_newf2:
+  readonly: true
+  backendroles:
+    - newf2
+
+sg_newf1:
+  readonly: true
+  backendroles:
+- newf1
+
+sg_fluentd:
+  readonly: true
+  backendroles:
+    - fluentd
+
+
+----Generate password:
+/usr/share/elasticsearch/plugins/search-guard-6/tools$ history|grep hash
+  584  ./hash.sh -p john123
+  585  ./hash.sh -p john456
+
+----sg_internal_users.yml
+Add below lines:
+#password is: john123
+john123:
+  hash: $2y$12$Npy7xpM3t.EIWT3xfweppejxczxmP6TkjXAbcQOmY4.bOnPZUZ/1C
+  roles:
+    - kibanauser
+    - newf1
+
+#password is: john456
+john456:
+  hash: $2y$12$iJ8ULmXWL4BWqwmzbOvA8.AbYEeps0Tk66j8p7nmNpDHZe7aXPdym
+  roles:
+    - kibanauser
+- newf2
+
+#password is: logstash
+fluentd:
+  hash: $2a$12$u1ShR4l4uBS3Uv59Pa2y5.1uQuZBrZtmNfqB3iM/.jL0XoV9sghS2
+  roles:
+    - fluentd
+
+
+----sgadmin_demo.sh
+Run /usr/share/elasticsearch/plugins/search-guard-6/tools$ ./sgadmin_demo.sh, to take effective.
+
+

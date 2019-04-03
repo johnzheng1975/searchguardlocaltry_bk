@@ -1,0 +1,3 @@
+elasticsearch-6.2.4.deb
+kibana-6.2.4-amd64.deb
+search-guard-kibana-plugin-6.2.4-15.zip 

@@ -1,0 +1,5 @@
+es sg config: /usr/share/elasticsearch/plugins/search-guard-6/sgconfig#
+kibana config: /etc/kibana/kibana.yml
+/etc/elasticsearch/elasticsearch.yml 
+vi /etc/elasticsearch/log4j2.properties
+/etc/fluent/fluent.conf
